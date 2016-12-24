@@ -1,0 +1,3 @@
+rootProject.name = 'SenalesDelFinRNA'
+
+include ':app'
