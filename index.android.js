@@ -11,11 +11,6 @@
  import React from 'react';
  const ReactNative = require('react-native');
 
-/**
- * Basic example that shows how to use <NavigationCardStack /> to build
- * an app with composite navigation system.
- */
-
 const {
   Component,
   PropTypes,
@@ -29,6 +24,7 @@ const {
   Text,
   TouchableOpacity,
   View,
+  Image,
 } = ReactNative;
 
 const {
@@ -46,25 +42,31 @@ function createAppNavigationState(): Object {
     tabs: {
       index: 0,
       routes: [
-        {key: 'apple'},
-        {key: 'banana'},
-        {key: 'orange'},
+        {key: 'noticias'},
+        {key: 'estudios'},
+        {key: 'lectura'},
+        {key: 'acerca'},
       ],
     },
-    // Scenes for the `apple` tab.
-    apple: {
+    // Scenes for the `Noticias` tab.
+    noticias: {
       index: 0,
-      routes: [{key: 'Apple Home'}],
+      routes: [{key: 'Señales Del Fin'}],
     },
-    // Scenes for the `banana` tab.
-    banana: {
+    // Scenes for the `Estudios` tab.
+    estudios: {
       index: 0,
-      routes: [{key: 'Banana Home'}],
+      routes: [{key: 'Señales Del Fin'}],
     },
-    // Scenes for the `orange` tab.
-    orange: {
+    // Scenes for the `Lectura` tab.
+    lectura: {
       index: 0,
-      routes: [{key: 'Orange Home'}],
+      routes: [{key: 'Señales Del Fin'}],
+    },
+    // Scenes for the 'Acerca' tab.
+    acerca: {
+      index: 0,
+      routes: [{key: 'Señales Del Fin'}],
     },
   };
 }
@@ -223,9 +225,10 @@ export default class SenalesDelFinRNA extends Component {
 const YourNavigator = createAppNavigationContainer(class extends Component {
   static propTypes = {
     appNavigationState: PropTypes.shape({
-      apple: NavigationPropTypes.navigationState.isRequired,
-      banana: NavigationPropTypes.navigationState.isRequired,
-      orange: NavigationPropTypes.navigationState.isRequired,
+      noticias: NavigationPropTypes.navigationState.isRequired,
+      estudios: NavigationPropTypes.navigationState.isRequired,
+      lectura: NavigationPropTypes.navigationState.isRequired,
+      acerca: NavigationPropTypes.navigationState.isRequired,
       tabs: NavigationPropTypes.navigationState.isRequired,
     }),
     navigate: PropTypes.func.isRequired,
@@ -424,11 +427,50 @@ const YourTab = createAppNavigationContainer(class extends Component {
 
   render(): React.Element {
     const style = [styles.tabText];
+    let img = '';
     if (this.props.selected) {
       style.push(styles.tabSelected);
+      //img = this.props.selectedImg;
+    }
+    if (this.props.selected) {
+      switch (this.props.route.key) {
+        case 'noticias':
+          img = require('./assets/images/news-icon@3x.png');
+          break;
+        case 'estudios':
+          img = require('./assets/images/study-icon@3x.png');
+          break;
+        case 'lectura':
+          img = require('./assets/images/read-icon@3x.png');
+          break;
+        case 'acerca':
+          img = require('./assets/images/info-icon@3x.png');
+          break;
+        default:
+          img = require('./assets/images/news-icon@3x.png');
+      }
+    }
+    else {
+      switch (this.props.route.key) {
+        case 'noticias':
+          img = require('./assets/images/news-icon-off@3x.png');
+          break;
+        case 'estudios':
+          img = require('./assets/images/study-icon-off@3x.png');
+          break;
+        case 'lectura':
+          img = require('./assets/images/read-icon-off@3x.png');
+          break;
+        case 'acerca':
+          img = require('./assets/images/info-icon-off@3x.png');
+          break;
+        default:
+          img = require('./assets/images/news-icon-off@3x.png');
+      }
     }
     return (
       <TouchableOpacity style={styles.tab} onPress={this._onPress}>
+        <Image source={img}  style={styles.tabImage} />
         <Text style={style}>
           {this.props.route.key}
         </Text>
@@ -449,21 +491,28 @@ const styles = StyleSheet.create({
     flex: 20,
   },
   tabs: {
-    flex: 1,
+    flex: 2,
     flexDirection: 'row',
   },
   tab: {
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: '#333333',
     flex: 1,
     justifyContent: 'center',
+    flexDirection: 'column',
   },
   tabText: {
-    color: '#222',
+    flex: 1,
+    color: '#929292',
     fontWeight: '500',
   },
   tabSelected: {
-    color: 'blue',
+    color: '#f0bf09',
+  },
+  tabImage: {
+    height: 20,
+    width: 20,
+    marginTop: 8
   },
 });
 
