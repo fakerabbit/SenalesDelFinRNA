@@ -313,6 +313,7 @@ const YourHeader = createAppNavigationContainer(class extends Component {
         {...this.props}
         renderTitleComponent={this._renderTitleComponent}
         onNavigateBack={this._back}
+        style={styles.header}
       />
     );
   }
@@ -323,7 +324,7 @@ const YourHeader = createAppNavigationContainer(class extends Component {
 
   _renderTitleComponent(props: Object): React.Element {
     return (
-      <NavigationHeader.Title>
+      <NavigationHeader.Title textStyle={styles.headerText}>
         {props.scene.route.key}
       </NavigationHeader.Title>
     );
@@ -513,6 +514,12 @@ const styles = StyleSheet.create({
     height: 20,
     width: 20,
     marginTop: 8
+  },
+  header: {
+    backgroundColor: '#333333',
+  },
+  headerText: {
+    color: '#f0bf09',
   },
 });
 
