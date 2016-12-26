@@ -34,8 +34,6 @@ var {
   View,
 } = ReactNative;
 
-var UIExplorerPage = require('./UIExplorerPage');
-
 var ListViewSimpleExample = React.createClass({
   statics: {
     title: '<ListView>',
@@ -57,17 +55,12 @@ var ListViewSimpleExample = React.createClass({
 
   render: function() {
     return (
-      <UIExplorerPage
-        title={this.props.navigator ? null : '<ListView>'}
-        noSpacer={true}
-        noScroll={true}>
-        <ListView
-          dataSource={this.state.dataSource}
-          renderRow={this._renderRow}
-          renderScrollComponent={props => <RecyclerViewBackedScrollView {...props} />}
-          renderSeparator={this._renderSeparator}
-        />
-      </UIExplorerPage>
+      <ListView
+        dataSource={this.state.dataSource}
+        renderRow={this._renderRow}
+        renderScrollComponent={props => <RecyclerViewBackedScrollView {...props} />}
+        renderSeparator={this._renderSeparator}
+      />
     );
   },
 
