@@ -6,10 +6,10 @@
 
  'use strict';
 
- const NavigationExampleRow = require('./NavigationExampleRow');
-
  import React from 'react';
  const ReactNative = require('react-native');
+
+ const ListViewExample = require('./ListViewExample');
 
 const {
   Component,
@@ -331,6 +331,8 @@ const YourHeader = createAppNavigationContainer(class extends Component {
   }
 });
 
+
+//onPress={this._pushRoute}
 // Next step.
 // Define your own scene.
 const YourScene = createAppNavigationContainer(class extends Component {
@@ -348,20 +350,8 @@ const YourScene = createAppNavigationContainer(class extends Component {
 
   render(): React.Element {
     return (
-      <ScrollView>
-        <NavigationExampleRow
-          text="Push Route"
-          onPress={this._pushRoute}
-        />
-        <NavigationExampleRow
-          text="Pop Route"
-          onPress={this._popRoute}
-        />
-        <NavigationExampleRow
-          text="Exit Header + Scenes + Tabs Example"
-          onPress={this._exit}
-        />
-      </ScrollView>
+      <ListViewExample
+      />
     );
   }
 
