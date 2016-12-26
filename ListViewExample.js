@@ -36,7 +36,6 @@ var {
 
 var ListViewSimpleExample = React.createClass({
   statics: {
-    title: '<ListView>',
     description: 'Performant, scrollable list of data.'
   },
 
@@ -70,7 +69,7 @@ var ListViewSimpleExample = React.createClass({
     return (
       <TouchableHighlight onPress={() => {
           this._pressRow(rowID);
-          highlightRow(sectionID, rowID);
+          //highlightRow(sectionID, rowID);
         }}>
         <View>
           <View style={styles.row}>
@@ -94,10 +93,10 @@ var ListViewSimpleExample = React.createClass({
   },
 
   _pressRow: function(rowID: number) {
-    this._pressData[rowID] = !this._pressData[rowID];
+    /*this._pressData[rowID] = !this._pressData[rowID];
     this.setState({dataSource: this.state.dataSource.cloneWithRows(
       this._genRows(this._pressData)
-    )});
+    )});*/
   },
 
   _renderSeparator: function(sectionID: number, rowID: number, adjacentRowHighlighted: bool) {
