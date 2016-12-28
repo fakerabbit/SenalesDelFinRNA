@@ -37,9 +37,6 @@ var {
 var RSSFeedApi = require('./api/RssFeedApi');
 
 var ListViewFeed = React.createClass({
-  statics: {
-    description: 'Performant, scrollable list of data.'
-  },
 
   getInitialState: function() {
     var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -85,7 +82,6 @@ var ListViewFeed = React.createClass({
         dataSource={this.state.dataSource}
         renderRow={this._renderRow}
         renderScrollComponent={props => <RecyclerViewBackedScrollView {...props} />}
-        //renderSeparator={this._renderSeparator}
       />
     );
   },
@@ -96,7 +92,6 @@ var ListViewFeed = React.createClass({
     return (
       <TouchableHighlight onPress={() => {
           this._pressRow(rowID);
-          //highlightRow(sectionID, rowID);
         }}>
         <View>
           <View style={styles.row}>
@@ -118,19 +113,8 @@ var ListViewFeed = React.createClass({
     this.setState({dataSource: this.state.dataSource.cloneWithRows(
       this._genRows(this._pressData)
     )});*/
-  },
-
-  _renderSeparator: function(sectionID: number, rowID: number, adjacentRowHighlighted: bool) {
-    return (
-      <View
-        key={`${sectionID}-${rowID}`}
-        style={{
-          height: adjacentRowHighlighted ? 4 : 1,
-          backgroundColor: adjacentRowHighlighted ? '#3B5998' : '#CCCCCC',
-        }}
-      />
-    );
   }
+
 });
 
 var styles = StyleSheet.create({
