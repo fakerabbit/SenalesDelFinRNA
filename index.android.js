@@ -4,12 +4,18 @@
  * @flow
  */
 
+/*
+*Feeds: http://www.senalesdelfin.com/rss/,
+http://estudialabiblia.co/feed/
+http://www.leelabiblia.co/rss/
+*/
+
  'use strict';
 
  import React from 'react';
  const ReactNative = require('react-native');
 
- const ListViewExample = require('./ListViewExample');
+ const ListViewFeed = require('./ListViewFeed');
 
 const {
   Component,
@@ -350,7 +356,8 @@ const YourScene = createAppNavigationContainer(class extends Component {
 
   render(): React.Element {
     return (
-      <ListViewExample
+      <ListViewFeed
+        feedSource='http://www.senalesdelfin.com/rss/'
       />
     );
   }

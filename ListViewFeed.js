@@ -34,7 +34,9 @@ var {
   View,
 } = ReactNative;
 
-var ListViewSimpleExample = React.createClass({
+var RSSFeedApi = require('./api/RssFeedApi');
+
+var ListViewFeed = React.createClass({
   statics: {
     description: 'Performant, scrollable list of data.'
   },
@@ -42,14 +44,38 @@ var ListViewSimpleExample = React.createClass({
   getInitialState: function() {
     var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     return {
-      dataSource: ds.cloneWithRows(this._genRows({})),
+      dataSource: ds,
+      feedSource: 'https://news.google.com/?output=rss',
     };
   },
 
-  _pressData: ({}: {[key: number]: boolean}),
+  _data: [],
+
+  _loadFeed: function() {
+    console.log('LOAD FEED');
+    //let {entries} = this.state;
+    RSSFeedApi.fetchRss(this.props.feedSource).then((res) => {
+          if (res.responseStatus == 200) {
+            let entries = res.responseData.feed;
+            console.log(entries);
+            this._onDataArrived(entries.entries);
+          } else {
+            console.log('FAILED FEED');
+            console.log(res.responseDetails);
+          }
+        });
+  },
+
+  _onDataArrived(newData) {
+    this._data = this._data.concat(newData);
+    this.setState({
+      dataSource: this.state.dataSource.cloneWithRows(this._data)
+    });
+  },
 
   componentWillMount: function() {
     this._pressData = {};
+    this._loadFeed();
   },
 
   render: function() {
@@ -63,9 +89,9 @@ var ListViewSimpleExample = React.createClass({
     );
   },
 
-  _renderRow: function(rowData: string, sectionID: number, rowID: number, highlightRow: (sectionID: number, rowID: number) => void) {
-    var rowHash = Math.abs(hashCode(rowData));
-    var imgSource = THUMB_URLS[rowHash % THUMB_URLS.length];
+  _renderRow: function(rowData: {}, sectionID: number, rowID: number, highlightRow: (sectionID: number, rowID: number) => void) {
+    var imgSource = 0;
+    var t = rowData ? rowData.title : "no entry";
     return (
       <TouchableHighlight onPress={() => {
           this._pressRow(rowID);
@@ -75,21 +101,12 @@ var ListViewSimpleExample = React.createClass({
           <View style={styles.row}>
             <Image style={styles.thumb} source={imgSource} />
             <Text style={styles.text}>
-              {rowData + ' - ' + LOREM_IPSUM.substr(0, rowHash % 301 + 10)}
+              {t}
             </Text>
           </View>
         </View>
       </TouchableHighlight>
     );
-  },
-
-  _genRows: function(pressData: {[key: number]: boolean}): Array<string> {
-    var dataBlob = [];
-    for (var ii = 0; ii < 100; ii++) {
-      var pressedText = pressData[ii] ? ' (pressed)' : '';
-      dataBlob.push('Row ' + ii + pressedText);
-    }
-    return dataBlob;
   },
 
   _pressRow: function(rowID: number) {
@@ -112,31 +129,6 @@ var ListViewSimpleExample = React.createClass({
   }
 });
 
-var THUMB_URLS = [
-  require('./assets/images/info-icon.png'),
-  require('./assets/images/info-icon.png'),
-  require('./assets/images/info-icon.png'),
-  require('./assets/images/info-icon.png'),
-  require('./assets/images/info-icon.png'),
-  require('./assets/images/info-icon.png'),
-  require('./assets/images/info-icon.png'),
-  require('./assets/images/info-icon.png'),
-  require('./assets/images/info-icon.png'),
-  require('./assets/images/info-icon.png'),
-  require('./assets/images/info-icon.png'),
-  require('./assets/images/info-icon.png'),
-  ];
-var LOREM_IPSUM = 'Lorem ipsum dolor sit amet, ius ad pertinax oportere accommodare, an vix civibus corrumpit referrentur. Te nam case ludus inciderint, te mea facilisi adipiscing. Sea id integre luptatum. In tota sale consequuntur nec. Erat ocurreret mei ei. Eu paulo sapientem vulputate est, vel an accusam intellegam interesset. Nam eu stet pericula reprimique, ea vim illud modus, putant invidunt reprehendunt ne qui.';
-
-/* eslint no-bitwise: 0 */
-var hashCode = function(str) {
-  var hash = 15;
-  for (var ii = str.length - 1; ii >= 0; ii--) {
-    hash = ((hash << 5) - hash) + str.charCodeAt(ii);
-  }
-  return hash;
-};
-
 var styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
@@ -151,6 +143,26 @@ var styles = StyleSheet.create({
   text: {
     flex: 1,
   },
+  wrapper: {
+    paddingTop: 20,
+    paddingBottom: 15,
+    paddingLeft: 10,
+    paddingRight: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#e9e9e9',
+  },
+  title: {
+    paddingTop: 2,
+    paddingBottom: 3,
+    paddingRight: 15,
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
+  description: {
+    color: "#B4AEAE",
+    fontSize: 12,
+    marginBottom: 5,
+  },
 });
 
-module.exports = ListViewSimpleExample;
+module.exports = ListViewFeed;
