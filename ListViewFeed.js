@@ -81,17 +81,18 @@ var ListViewFeed = React.createClass({
   render: function() {
     return (
       <ListView
+        style={styles.list}
         dataSource={this.state.dataSource}
         renderRow={this._renderRow}
         renderScrollComponent={props => <RecyclerViewBackedScrollView {...props} />}
-        renderSeparator={this._renderSeparator}
+        //renderSeparator={this._renderSeparator}
       />
     );
   },
 
   _renderRow: function(rowData: {}, sectionID: number, rowID: number, highlightRow: (sectionID: number, rowID: number) => void) {
     var title = rowData ? rowData.title : "no entry";
-    var imgSource = rowData ? (rowData.mediaGroups[0].contents[0].medium == 'image' ? {uri: rowData.mediaGroups[0].contents[0].url} : 0) : 0;
+    var imgSource = rowData ? (rowData.mediaGroups[0].contents[0].medium == 'image' ? {uri: rowData.mediaGroups[0].contents[0].url} : require('./assets/images/feed-placeholder@2x.png')) : require('./assets/images/feed-placeholder@2x.png');
     return (
       <TouchableHighlight onPress={() => {
           this._pressRow(rowID);
@@ -99,10 +100,13 @@ var ListViewFeed = React.createClass({
         }}>
         <View>
           <View style={styles.row}>
-            <Image style={styles.thumb} source={imgSource} />
-            <Text style={styles.text}>
-              {title}
-            </Text>
+            <Image style={styles.thumb} source={imgSource}>
+              <Image style={styles.shadow} source={require('./assets/images/feed-shadow@2x.png')} resizeMode='cover'>
+                <Text style={styles.text}>
+                  {title}
+                </Text>
+              </Image>
+            </Image>
           </View>
         </View>
       </TouchableHighlight>
@@ -130,38 +134,34 @@ var ListViewFeed = React.createClass({
 });
 
 var styles = StyleSheet.create({
+  list: {
+    backgroundColor: '#4b4a4a',
+  },
   row: {
     flexDirection: 'row',
     justifyContent: 'center',
-    padding: 10,
-    backgroundColor: '#F6F6F6',
+    paddingTop: 5,
+    paddingLeft: 5,
+    paddingRight: 5,
+    backgroundColor: '#4b4a4a',
+    height: 160,
   },
   thumb: {
-    width: 64,
-    height: 64,
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+  },
+  shadow: {
+    flex: 1,
+    flexDirection: 'row',
   },
   text: {
     flex: 1,
-  },
-  wrapper: {
-    paddingTop: 20,
-    paddingBottom: 15,
-    paddingLeft: 10,
-    paddingRight: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#e9e9e9',
-  },
-  title: {
-    paddingTop: 2,
-    paddingBottom: 3,
-    paddingRight: 15,
-    fontWeight: 'bold',
-    fontSize: 16,
-  },
-  description: {
-    color: "#B4AEAE",
-    fontSize: 12,
-    marginBottom: 5,
+    color: '#f0bf09',
+    padding: 5,
+    alignSelf: 'flex-end',
+    fontSize: 18,
   },
 });
 

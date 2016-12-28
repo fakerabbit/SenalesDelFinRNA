@@ -521,6 +521,7 @@ const styles = StyleSheet.create({
   },
   headerText: {
     color: '#f0bf09',
+    fontSize: 20,
   },
 });
 
