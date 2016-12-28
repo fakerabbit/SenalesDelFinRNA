@@ -4,12 +4,6 @@
  * @flow
  */
 
-/*
-*Feeds: http://www.senalesdelfin.com/rss/,
-http://estudialabiblia.co/feed/
-http://www.leelabiblia.co/rss/
-*/
-
  'use strict';
 
  import React from 'react';
@@ -58,21 +52,25 @@ function createAppNavigationState(): Object {
     noticias: {
       index: 0,
       routes: [{key: 'Señales Del Fin'}],
+      feedUrl: 'http://www.senalesdelfin.com/rss/',
     },
     // Scenes for the `Estudios` tab.
     estudios: {
       index: 0,
       routes: [{key: 'Señales Del Fin'}],
+      feedUrl: 'http://estudialabiblia.co/feed/',
     },
     // Scenes for the `Lectura` tab.
     lectura: {
       index: 0,
       routes: [{key: 'Señales Del Fin'}],
+      feedUrl: 'http://www.leelabiblia.co/rss/',
     },
     // Scenes for the 'Acerca' tab.
     acerca: {
       index: 0,
       routes: [{key: 'Señales Del Fin'}],
+      feedUrl: 'http://www.leelabiblia.co/rss/',
     },
   };
 }
@@ -287,9 +285,14 @@ const YourNavigator = createAppNavigationContainer(class extends Component {
   // The detailed spec of `sceneProps` is defined at `NavigationTypeDefinition`
   // as type `NavigationSceneRendererProps`.
   _renderScene(sceneProps: Object): React.Element {
+    const {appNavigationState} = this.props;
+    const {tabs} = appNavigationState;
+    const tabKey = tabs.routes[tabs.index].key;
+    const scenes = appNavigationState[tabKey];
     return (
       <YourScene
         {...sceneProps}
+        feedUrl={scenes.feedUrl}
       />
     );
   }
@@ -352,12 +355,13 @@ const YourScene = createAppNavigationContainer(class extends Component {
     this._exit = this._exit.bind(this);
     this._popRoute = this._popRoute.bind(this);
     this._pushRoute = this._pushRoute.bind(this);
+    this.feedUrl = props.feedUrl;
   }
 
   render(): React.Element {
     return (
       <ListViewFeed
-        feedSource='http://www.senalesdelfin.com/rss/'
+        feedSource={this.feedUrl}
       />
     );
   }
