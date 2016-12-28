@@ -57,7 +57,7 @@ var ListViewFeed = React.createClass({
     RSSFeedApi.fetchRss(this.props.feedSource).then((res) => {
           if (res.responseStatus == 200) {
             let entries = res.responseData.feed;
-            console.log(entries);
+            //console.log(entries);
             this._onDataArrived(entries.entries);
           } else {
             console.log('FAILED FEED');
@@ -90,8 +90,8 @@ var ListViewFeed = React.createClass({
   },
 
   _renderRow: function(rowData: {}, sectionID: number, rowID: number, highlightRow: (sectionID: number, rowID: number) => void) {
-    var imgSource = 0;
-    var t = rowData ? rowData.title : "no entry";
+    var title = rowData ? rowData.title : "no entry";
+    var imgSource = rowData ? (rowData.mediaGroups[0].contents[0].medium == 'image' ? {uri: rowData.mediaGroups[0].contents[0].url} : 0) : 0;
     return (
       <TouchableHighlight onPress={() => {
           this._pressRow(rowID);
@@ -101,7 +101,7 @@ var ListViewFeed = React.createClass({
           <View style={styles.row}>
             <Image style={styles.thumb} source={imgSource} />
             <Text style={styles.text}>
-              {t}
+              {title}
             </Text>
           </View>
         </View>
