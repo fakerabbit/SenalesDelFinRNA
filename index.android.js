@@ -10,6 +10,7 @@
  const ReactNative = require('react-native');
 
  const ListViewFeed = require('./ListViewFeed');
+ const AboutView = require('./AboutView');
 
 const {
   Component,
@@ -291,8 +292,6 @@ const YourNavigator = createAppNavigationContainer(class extends Component {
     const tabKey = tabs.routes[tabs.index].key;
     const scenes = appNavigationState[tabKey];
     const isAbout = scenes.feedUrl == 'about'? true : false;
-    console.log('scenes:');
-    console.log(scenes);
     if (isAbout) {
       return (
         <AboutScene
@@ -521,6 +520,9 @@ const YourTab = createAppNavigationContainer(class extends Component {
   }
 });
 
+//
+// About View Scene
+//
 const AboutScene = createAppNavigationContainer(class extends Component {
   static propTypes = {
     ...NavigationPropTypes.SceneRendererProps,
@@ -536,10 +538,7 @@ const AboutScene = createAppNavigationContainer(class extends Component {
 
   render(): React.Element {
     return (
-      <WebView
-        source={{uri: 'http://idevco.de'}}
-        scalesPageToFit={true}
-      />
+      <AboutView/>
     );
   }
 
