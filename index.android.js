@@ -340,8 +340,6 @@ const YourHeader = createAppNavigationContainer(class extends Component {
   }
 });
 
-
-//onPress={this._pushRoute}
 // Next step.
 // Define your own scene.
 const YourScene = createAppNavigationContainer(class extends Component {
@@ -359,16 +357,39 @@ const YourScene = createAppNavigationContainer(class extends Component {
   }
 
   render(): React.Element {
-    return (
-      <ListViewFeed
-        feedSource={this.feedUrl}
-      />
-    );
+    const {navigationState} = this.props;
+    const isListView = navigationState.index == 0;
+    console.log(navigationState);
+    if (isListView) {
+      return (
+        <ListViewFeed
+          feedSource={this.feedUrl}
+          pushRow={this._pushRoute}
+        />
+      );
+    }
+    else {
+      return (
+        <Text>
+          Next Scene
+        </Text>
+      );
+    }
   }
 
-  _pushRoute(): void {
+  renderIf(condition, content): void {
+    if (condition) {
+        return content;
+    } else {
+        return null;
+    }
+  }
+
+  _pushRoute(title: string, rowUrl: string): void {
+    console.log('Pressed:');
+    console.log(rowUrl);
     // Just push a route with a new unique key.
-    const route = {key: '[' + this.props.scenes.length + ']-' + Date.now()};
+    const route = {key: title, url: rowUrl}; //{key: '[' + this.props.scenes.length + ']-' + Date.now()};
     this.props.navigate({type: 'push', route});
   }
 
@@ -432,7 +453,6 @@ const YourTab = createAppNavigationContainer(class extends Component {
     let img = '';
     if (this.props.selected) {
       style.push(styles.tabSelected);
-      //img = this.props.selectedImg;
     }
     if (this.props.selected) {
       switch (this.props.route.key) {
@@ -522,6 +542,7 @@ const styles = StyleSheet.create({
   headerText: {
     color: '#f0bf09',
     fontSize: 20,
+    height: 30,
   },
 });
 

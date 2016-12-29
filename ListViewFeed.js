@@ -42,7 +42,8 @@ var ListViewFeed = React.createClass({
     var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     return {
       dataSource: ds,
-      feedSource: 'https://news.google.com/?output=rss',
+      feedSource: '',
+      pushRow: '',
     };
   },
 
@@ -87,11 +88,12 @@ var ListViewFeed = React.createClass({
   },
 
   _renderRow: function(rowData: {}, sectionID: number, rowID: number, highlightRow: (sectionID: number, rowID: number) => void) {
-    var title = rowData ? rowData.title : "no entry";
+    var title = rowData ? rowData.title : "title";
     var imgSource = rowData ? (rowData.mediaGroups[0].contents[0].medium == 'image' ? {uri: rowData.mediaGroups[0].contents[0].url} : require('./assets/images/feed-placeholder@2x.png')) : require('./assets/images/feed-placeholder@2x.png');
+    var rowUrl = rowData ? (rowData.link ? rowData.link : 0) : 0;
     return (
       <TouchableHighlight onPress={() => {
-          this._pressRow(rowID);
+          this._pressRow(title, rowUrl);
         }}>
         <View>
           <View style={styles.row}>
@@ -108,11 +110,8 @@ var ListViewFeed = React.createClass({
     );
   },
 
-  _pressRow: function(rowID: number) {
-    /*this._pressData[rowID] = !this._pressData[rowID];
-    this.setState({dataSource: this.state.dataSource.cloneWithRows(
-      this._genRows(this._pressData)
-    )});*/
+  _pressRow: function(title: string, rowUrl: string) {
+    this.props.pushRow(title, rowUrl);
   }
 
 });
