@@ -1,5 +1,5 @@
 /**
- * Sample React Native App
+ * SenalesDelFin React Native App for Android
  * https://github.com/facebook/react-native
  * @flow
  */
@@ -25,6 +25,7 @@ const {
   TouchableOpacity,
   View,
   Image,
+  WebView,
 } = ReactNative;
 
 const {
@@ -369,10 +370,13 @@ const YourScene = createAppNavigationContainer(class extends Component {
       );
     }
     else {
+      const route = navigationState.routes[navigationState.index];
+      const url = route.url ? route.url : '';
       return (
-        <Text>
-          Next Scene
-        </Text>
+        <WebView
+          source={{uri: url}}
+          scalesPageToFit={true}
+        />
       );
     }
   }
