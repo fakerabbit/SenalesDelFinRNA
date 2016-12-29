@@ -11,6 +11,7 @@
 
  const ListViewFeed = require('./ListViewFeed');
  const AboutView = require('./AboutView');
+ const GoldNavHeaderBackBtn = require('./GoldNavHeaderBackBtn');
 
 const {
   Component,
@@ -326,6 +327,7 @@ const YourHeader = createAppNavigationContainer(class extends Component {
     super(props, context);
     this._back = this._back.bind(this);
     this._renderTitleComponent = this._renderTitleComponent.bind(this);
+    this._renderBackButtonComponent = this._renderBackButtonComponent.bind(this);
   }
 
   render(): React.Element {
@@ -335,6 +337,7 @@ const YourHeader = createAppNavigationContainer(class extends Component {
         renderTitleComponent={this._renderTitleComponent}
         onNavigateBack={this._back}
         style={styles.header}
+        renderLeftComponent={this._renderBackButtonComponent}
       />
     );
   }
@@ -350,6 +353,18 @@ const YourHeader = createAppNavigationContainer(class extends Component {
       </NavigationHeader.Title>
     );
   }
+
+  _renderBackButtonComponent(props: Object): React.Element {
+    if (props.scene.index === 0) {
+        return null;
+    }
+    return (
+        <GoldNavHeaderBackBtn
+          onPress={this._back}
+        />
+      );
+  }
+
 });
 
 // Next step.
@@ -401,8 +416,6 @@ const YourScene = createAppNavigationContainer(class extends Component {
   }
 
   _pushRoute(title: string, rowUrl: string): void {
-    console.log('Pressed:');
-    console.log(rowUrl);
     // Just push a route with a new unique key.
     const route = {key: title, url: rowUrl}; //{key: '[' + this.props.scenes.length + ']-' + Date.now()};
     this.props.navigate({type: 'push', route});
@@ -551,8 +564,6 @@ const AboutScene = createAppNavigationContainer(class extends Component {
   }
 
   _pushRoute(title: string, rowUrl: string): void {
-    console.log('Pressed:');
-    console.log(rowUrl);
     // Just push a route with a new unique key.
     const route = {key: title, url: rowUrl}; //{key: '[' + this.props.scenes.length + ']-' + Date.now()};
     this.props.navigate({type: 'push', route});
