@@ -12,6 +12,7 @@
  const ListViewFeed = require('./ListViewFeed');
  const AboutView = require('./AboutView');
  const GoldNavHeaderBackBtn = require('./GoldNavHeaderBackBtn');
+ const ShareButton = require('./ShareButton');
 
 const {
   Component,
@@ -28,6 +29,7 @@ const {
   View,
   Image,
   WebView,
+  Share,
 } = ReactNative;
 
 const {
@@ -326,8 +328,10 @@ const YourHeader = createAppNavigationContainer(class extends Component {
   constructor(props: Object, context: any) {
     super(props, context);
     this._back = this._back.bind(this);
+    this._shareArticle = this._shareArticle.bind(this);
     this._renderTitleComponent = this._renderTitleComponent.bind(this);
     this._renderBackButtonComponent = this._renderBackButtonComponent.bind(this);
+    this._renderRightButtonComponent = this._renderRightButtonComponent.bind(this);
   }
 
   render(): React.Element {
@@ -338,12 +342,22 @@ const YourHeader = createAppNavigationContainer(class extends Component {
         onNavigateBack={this._back}
         style={styles.header}
         renderLeftComponent={this._renderBackButtonComponent}
+        renderRightComponent={this._renderRightButtonComponent}
       />
     );
   }
 
   _back(): void {
     this.props.navigate({type: 'pop'});
+  }
+
+  _shareArticle(): void {
+    const url = this.props.scene.route.url;
+    if (url) {
+      Share.share({
+        message: url
+      });
+    }
   }
 
   _renderTitleComponent(props: Object): React.Element {
@@ -363,6 +377,18 @@ const YourHeader = createAppNavigationContainer(class extends Component {
           onPress={this._back}
         />
       );
+  }
+
+  _renderRightButtonComponent(props: Object): React.Element {
+    if (props.scene.index === 0) {
+        return null;
+    }
+    const url = props.scene.route.url;
+    return(
+      <ShareButton
+        onPress={this._shareArticle}
+      />
+    );
   }
 
 });
@@ -386,7 +412,7 @@ const YourScene = createAppNavigationContainer(class extends Component {
   render(): React.Element {
     const {navigationState} = this.props;
     const isListView = navigationState.index == 0;
-    console.log(navigationState);
+    //console.log(navigationState);
     if (isListView) {
       return (
         <ListViewFeed

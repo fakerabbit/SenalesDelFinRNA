@@ -50,7 +50,7 @@ var ListViewFeed = React.createClass({
   _data: [],
 
   _loadFeed: function() {
-    console.log('LOAD FEED');
+    //console.log('LOAD FEED');
     //let {entries} = this.state;
     RSSFeedApi.fetchRss(this.props.feedSource).then((res) => {
           if (res.responseStatus == 200) {

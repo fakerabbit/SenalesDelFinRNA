@@ -62,8 +62,6 @@ var AboutView = React.createClass({
 
   render: function() {
     const {ds} = this.state;
-    console.log('AboutView state:');
-    console.log(ds);
     return (
       <ScrollView style={styles.scroll}>
         {ds.map(this._renderRow)}
