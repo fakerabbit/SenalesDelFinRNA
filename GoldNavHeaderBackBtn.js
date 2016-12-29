@@ -18,7 +18,6 @@
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *
- * @providesModule NavigationHeaderBackButton
  * @flow
 */
 'use strict';
@@ -38,13 +37,13 @@ type Props = {
   onPress: Function,
 };
 
-const NavigationHeaderBackButton = (props: Props) => (
+const GoldHeaderBackButton = (props: Props) => (
   <TouchableOpacity style={styles.buttonContainer} onPress={props.onPress}>
     <Image style={styles.button} source={require('./assets/images/back-icon@2x.png')} />
   </TouchableOpacity>
 );
 
-NavigationHeaderBackButton.propTypes = {
+GoldHeaderBackButton.propTypes = {
   onPress: React.PropTypes.func.isRequired
 };
 
@@ -64,4 +63,4 @@ const styles = StyleSheet.create({
   }
 });
 
-module.exports = NavigationHeaderBackButton;
+module.exports = GoldHeaderBackButton;
