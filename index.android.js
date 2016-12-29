@@ -71,7 +71,7 @@ function createAppNavigationState(): Object {
     acerca: {
       index: 0,
       routes: [{key: 'Señales Del Fin'}],
-      feedUrl: 'http://www.leelabiblia.co/rss/',
+      feedUrl: 'about',
     },
   };
 }
@@ -290,12 +290,24 @@ const YourNavigator = createAppNavigationContainer(class extends Component {
     const {tabs} = appNavigationState;
     const tabKey = tabs.routes[tabs.index].key;
     const scenes = appNavigationState[tabKey];
-    return (
-      <YourScene
-        {...sceneProps}
-        feedUrl={scenes.feedUrl}
-      />
-    );
+    const isAbout = scenes.feedUrl == 'about'? true : false;
+    console.log('scenes:');
+    console.log(scenes);
+    if (isAbout) {
+      return (
+        <AboutScene
+          {...sceneProps}
+        />
+      );
+    }
+    else {
+      return (
+        <YourScene
+          {...sceneProps}
+          feedUrl={scenes.feedUrl}
+        />
+      );
+    }
   }
 
   _back() {
@@ -506,6 +518,53 @@ const YourTab = createAppNavigationContainer(class extends Component {
 
   _onPress() {
     this.props.navigate({type: 'selectTab', tabKey: this.props.route.key});
+  }
+});
+
+const AboutScene = createAppNavigationContainer(class extends Component {
+  static propTypes = {
+    ...NavigationPropTypes.SceneRendererProps,
+    navigate: PropTypes.func.isRequired,
+  };
+
+  constructor(props: Object, context: any) {
+    super(props, context);
+    this._exit = this._exit.bind(this);
+    this._popRoute = this._popRoute.bind(this);
+    this._pushRoute = this._pushRoute.bind(this);
+  }
+
+  render(): React.Element {
+    return (
+      <WebView
+        source={{uri: 'http://idevco.de'}}
+        scalesPageToFit={true}
+      />
+    );
+  }
+
+  renderIf(condition, content): void {
+    if (condition) {
+        return content;
+    } else {
+        return null;
+    }
+  }
+
+  _pushRoute(title: string, rowUrl: string): void {
+    console.log('Pressed:');
+    console.log(rowUrl);
+    // Just push a route with a new unique key.
+    const route = {key: title, url: rowUrl}; //{key: '[' + this.props.scenes.length + ']-' + Date.now()};
+    this.props.navigate({type: 'push', route});
+  }
+
+  _popRoute(): void {
+    this.props.navigate({type: 'pop'});
+  }
+
+  _exit(): void {
+    this.props.navigate({type: 'exit'});
   }
 });
 
