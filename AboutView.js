@@ -98,7 +98,7 @@ var AboutView = React.createClass({
           imgSource = require('./assets/images/estudiosadv-icon@2x.jpg');
       }
       return (
-        <TouchableHighlight onPress={() => {
+        <TouchableHighlight key={i} onPress={() => {
             this._pressRow(data.url);
           }}>
           <View style={styles.row}>
@@ -110,7 +110,7 @@ var AboutView = React.createClass({
     }
     else {
       return (
-        <View style={styles.header}>
+        <View key={i} style={styles.header}>
           <Text style={styles.title}>{data.title}</Text>
         </View>
       );
@@ -119,7 +119,6 @@ var AboutView = React.createClass({
 
   _pressRow: function(dataUrl: string) {
     Linking.openURL(dataUrl).catch(err => console.error('An error occurred opening About url.', err));
-
   }
 
 });
@@ -146,10 +145,6 @@ var styles = StyleSheet.create({
     width: 100,
     overflow: 'hidden',
     padding: 5
-  },
-  shadow: {
-    flex: 1,
-    flexDirection: 'row',
   },
   text: {
     flex: 2,
