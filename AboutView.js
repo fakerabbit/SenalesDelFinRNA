@@ -9,6 +9,7 @@ var {
   StyleSheet,
   Text,
   View,
+  Linking,
 } = ReactNative;
 
 var AboutView = React.createClass({
@@ -97,10 +98,14 @@ var AboutView = React.createClass({
           imgSource = require('./assets/images/estudiosadv-icon@2x.jpg');
       }
       return (
-        <View style={styles.row}>
-          <Image style={styles.thumb} source={imgSource} />
-          <Text style={styles.text}>{data.title}</Text>
-        </View>
+        <TouchableHighlight onPress={() => {
+            this._pressRow(data.url);
+          }}>
+          <View style={styles.row}>
+            <Image style={styles.thumb} source={imgSource} />
+            <Text style={styles.text}>{data.title}</Text>
+          </View>
+        </TouchableHighlight>
       );
     }
     else {
@@ -112,7 +117,9 @@ var AboutView = React.createClass({
     }
   },
 
-  _pressRow: function(title: string, rowUrl: string) {
+  _pressRow: function(dataUrl: string) {
+    Linking.openURL(dataUrl).catch(err => console.error('An error occurred opening About url.', err));
+
   }
 
 });
