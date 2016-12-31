@@ -32,6 +32,7 @@ var {
   RecyclerViewBackedScrollView,
   Text,
   View,
+  ActivityIndicator,
 } = ReactNative;
 
 var RSSFeedApi = require('./api/RssFeedApi');
@@ -49,27 +50,32 @@ var ListViewFeed = React.createClass({
 
   _data: [],
   _isLoading: false,
+  _isAnimating: false,
 
   _loadFeed: function() {
     //console.log('LOAD FEED');
     this._isLoading = true;
+    this._isAnimating = true;
     this._onLoading();
     RSSFeedApi.fetchRss(this.props.feedSource)
     .then((res) => {
           if (res.responseStatus == 200) {
             this._isLoading = false;
+            this._isAnimating = false;
             let entries = res.responseData.feed;
             //console.log(entries);
             this._onDataArrived(entries.entries);
           } else {
             //console.log('FAILED FEED');
             //console.log(res.responseDetails);
+            this._isAnimating = false;
             this._onError();
           }
         })
         .catch((error) => {
           //console.log('error fetching:');
           //console.log(error.message);
+          this._isAnimating = false;
           this._onNoData();
         });
   },
@@ -83,7 +89,7 @@ var ListViewFeed = React.createClass({
 
   _onLoading() {
     const data = {
-      title: 'Buscando información...'
+      title: '...'
     };
     this.setState({
       dataSource: this.state.dataSource.cloneWithRows(data)
@@ -166,8 +172,14 @@ var ListViewFeed = React.createClass({
     var title = rowData ? rowData : "title";
     return (
       <View>
-        <View style={styles.row}>
-          <Text style={styles.text}>
+        <View style={styles.loadingRow}>
+          <ActivityIndicator
+            size="large"
+            color="#f0bf09"
+            animating={this._isAnimating}
+            style={styles.loadingIndicator}
+          />
+          <Text style={styles.loadingText}>
             {title}
           </Text>
         </View>
@@ -206,6 +218,23 @@ var styles = StyleSheet.create({
     padding: 5,
     alignSelf: 'flex-end',
     fontSize: 18,
+  },
+  loadingRow: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    padding: 10,
+    backgroundColor: '#4b4a4a',
+    height: 150,
+  },
+  loadingIndicator: {
+    flex: 1,
+    padding: 10,
+  },
+  loadingText: {
+    flex: 2,
+    color: '#f0bf09',
+    fontSize: 18,
+    padding: 10,
   },
 });
 
