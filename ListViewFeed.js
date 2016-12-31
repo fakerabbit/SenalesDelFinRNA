@@ -48,19 +48,29 @@ var ListViewFeed = React.createClass({
   },
 
   _data: [],
+  _isLoading: false,
 
   _loadFeed: function() {
     //console.log('LOAD FEED');
-    //let {entries} = this.state;
-    RSSFeedApi.fetchRss(this.props.feedSource).then((res) => {
+    this._isLoading = true;
+    this._onLoading();
+    RSSFeedApi.fetchRss(this.props.feedSource)
+    .then((res) => {
           if (res.responseStatus == 200) {
+            this._isLoading = false;
             let entries = res.responseData.feed;
             //console.log(entries);
             this._onDataArrived(entries.entries);
           } else {
-            console.log('FAILED FEED');
-            console.log(res.responseDetails);
+            //console.log('FAILED FEED');
+            //console.log(res.responseDetails);
+            this._onError();
           }
+        })
+        .catch((error) => {
+          //console.log('error fetching:');
+          //console.log(error.message);
+          this._onNoData();
         });
   },
 
@@ -71,20 +81,58 @@ var ListViewFeed = React.createClass({
     });
   },
 
+  _onLoading() {
+    const data = {
+      title: 'Buscando información...'
+    };
+    this.setState({
+      dataSource: this.state.dataSource.cloneWithRows(data)
+    });
+  },
+
+  _onNoData() {
+    const data = {
+      title: 'Error. Verifique que está conectado al internet.'
+    };
+    this.setState({
+      dataSource: this.state.dataSource.cloneWithRows(data)
+    });
+  },
+
+  _onError() {
+    const data = {
+      title: 'Hubo un error tratando de conectarse al servidor. Por favor intente más tarde.'
+    };
+    this.setState({
+      dataSource: this.state.dataSource.cloneWithRows(data)
+    });
+  },
+
   componentWillMount: function() {
-    this._pressData = {};
     this._loadFeed();
   },
 
   render: function() {
-    return (
-      <ListView
-        style={styles.list}
-        dataSource={this.state.dataSource}
-        renderRow={this._renderRow}
-        renderScrollComponent={props => <RecyclerViewBackedScrollView {...props} />}
-      />
-    );
+    if (this._isLoading) {
+      return (
+        <ListView
+          style={styles.list}
+          dataSource={this.state.dataSource}
+          renderRow={this._renderRowAlternate}
+          renderScrollComponent={props => <RecyclerViewBackedScrollView {...props} />}
+        />
+      );
+    }
+    else {
+      return (
+        <ListView
+          style={styles.list}
+          dataSource={this.state.dataSource}
+          renderRow={this._renderRow}
+          renderScrollComponent={props => <RecyclerViewBackedScrollView {...props} />}
+        />
+      );
+    }
   },
 
   _renderRow: function(rowData: {}, sectionID: number, rowID: number, highlightRow: (sectionID: number, rowID: number) => void) {
@@ -112,7 +160,20 @@ var ListViewFeed = React.createClass({
 
   _pressRow: function(title: string, rowUrl: string) {
     this.props.pushRow(title, rowUrl);
-  }
+  },
+
+  _renderRowAlternate: function(rowData: {}, sectionID: number, rowID: number, highlightRow: (sectionID: number, rowID: number) => void) {
+    var title = rowData ? rowData : "title";
+    return (
+      <View>
+        <View style={styles.row}>
+          <Text style={styles.text}>
+            {title}
+          </Text>
+        </View>
+      </View>
+    );
+  },
 
 });
 
