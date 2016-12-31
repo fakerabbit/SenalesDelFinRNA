@@ -406,6 +406,7 @@ const YourScene = createAppNavigationContainer(class extends Component {
     this._exit = this._exit.bind(this);
     this._popRoute = this._popRoute.bind(this);
     this._pushRoute = this._pushRoute.bind(this);
+    this._onWebError = this._onWebError.bind(this);
     this.feedUrl = props.feedUrl;
   }
 
@@ -428,6 +429,7 @@ const YourScene = createAppNavigationContainer(class extends Component {
         <WebView
           source={{uri: url}}
           scalesPageToFit={true}
+          renderError={this._onWebError}
         />
       );
     }
@@ -454,6 +456,16 @@ const YourScene = createAppNavigationContainer(class extends Component {
   _exit(): void {
     this.props.navigate({type: 'exit'});
   }
+
+  _onWebError(): React.Element {
+    const msg = 'Hubo un error cargando la página. Por favor verifique su conección a internet.';
+    return(
+      <Text style={styles.webError}>
+        {msg}
+      </Text>
+    );
+  }
+
 });
 
 // Next step.
@@ -643,6 +655,11 @@ const styles = StyleSheet.create({
     fontSize: 20,
     height: 30,
   },
+  webError: {
+    flex: 1,
+    padding: 10,
+    fontSize: 20,
+  }
 });
 
 AppRegistry.registerComponent('SenalesDelFinRNA', () => SenalesDelFinRNA);
