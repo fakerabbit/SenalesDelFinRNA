@@ -1,7 +1,3 @@
-/*
-* https://github.com/christopherdro/react-native-rss-reader
-*/
-
 'use strict';
 
 var Api = {
@@ -10,10 +6,18 @@ var Api = {
       url = "http://" + url;
     }
 
-    var GOOGLE_FEED_API_URL = 'https://ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=-1&q=';
-    var url = GOOGLE_FEED_API_URL + encodeURIComponent(url);
+    /*var urlencoded = encodeURIComponent(url);
 
-    return fetch(url).then((res) => res.json());
+    return fetch(url)
+    .then((response) => response.text())
+    .then((responseText) => {
+
+    })
+    .catch((error) => {
+      console.log('Error fetching the feed: ', error);
+    });*/
+
+    return fetch(url).then((res) => res.text());
   }
 };
 

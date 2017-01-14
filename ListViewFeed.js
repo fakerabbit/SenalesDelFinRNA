@@ -22,6 +22,7 @@
  */
 'use strict';
 
+var DOMParser = require('xmldom').DOMParser;
 var React = require('react');
 var ReactNative = require('react-native');
 var {
@@ -59,22 +60,43 @@ var ListViewFeed = React.createClass({
     this._onLoading();
     RSSFeedApi.fetchRss(this.props.feedSource)
     .then((res) => {
-          if (res.responseStatus == 200) {
+          if (res) {
             this._isLoading = false;
             this._isAnimating = false;
-            let entries = res.responseData.feed;
-            //console.log(entries);
-            this._onDataArrived(entries.entries);
+            var doc = new DOMParser().parseFromString(res, 'text/xml');
+            //console.log("doc:");
+            //console.log(doc);
+            var items = doc.getElementsByTagName('item');
+            //console.log("items:");
+            //console.log(items);
+            var titles = doc.getElementsByTagName('title');
+            var links = doc.getElementsByTagName('link');
+            var mediaThumbnail = doc.getElementsByTagName('media:thumbnail');
+            var mediaContent = doc.getElementsByTagName('media:content');
+            var objs = [];
+            for (var i=1; i < titles.length; i++) {
+              var title = titles[i].firstChild.nodeValue;
+              if (title != "Estudia La Biblia") {
+                objs.push({
+                  title: titles[i].firstChild.nodeValue,
+                  link: links[i].firstChild.nodeValue,
+                  image: mediaThumbnail[i-2] ? mediaThumbnail[i-2].getAttribute('url') : mediaContent[i-1].getAttribute('url')
+                })
+              }
+            }
+            console.log('objs:');
+            console.log(objs);
+            this._onDataArrived(objs);
           } else {
-            //console.log('FAILED FEED');
-            //console.log(res.responseDetails);
+            console.log('FAILED FEED');
+            console.log(res.responseDetails);
             this._isAnimating = false;
             this._onError();
           }
         })
         .catch((error) => {
-          //console.log('error fetching:');
-          //console.log(error.message);
+          console.log('error fetching:');
+          console.log(error.message);
           this._isAnimating = false;
           this._onNoData();
         });
@@ -143,7 +165,7 @@ var ListViewFeed = React.createClass({
 
   _renderRow: function(rowData: {}, sectionID: number, rowID: number, highlightRow: (sectionID: number, rowID: number) => void) {
     var title = rowData ? rowData.title : "title";
-    var imgSource = rowData ? (rowData.mediaGroups[0].contents[0].medium == 'image' ? {uri: rowData.mediaGroups[0].contents[0].url} : require('./assets/images/feed-placeholder@2x.png')) : require('./assets/images/feed-placeholder@2x.png');
+    var imgSource = rowData ? (rowData.image ? {uri: rowData.image} : require('./assets/images/feed-placeholder@2x.png')) : require('./assets/images/feed-placeholder@2x.png');
     var rowUrl = rowData ? (rowData.link ? rowData.link : 0) : 0;
     return (
       <TouchableHighlight onPress={() => {
