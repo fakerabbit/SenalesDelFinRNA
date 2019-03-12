@@ -22,17 +22,17 @@ var AboutView = React.createClass({
         },
         {
           title: 'EstudiaLaBiblia.co',
-          url: 'http://estudialabiblia.co',
+          url: 'https://estudialabiblia.co',
           img: 0,
         },
         {
           title: 'LeeLaBiblia.co',
-          url: 'http://leelabiblia.co',
+          url: 'https://leelabiblia.co',
           img: 1,
         },
         {
           title: 'SenalesDelFin.com',
-          url: 'http://www.senalesdelfin.com',
+          url: 'https://www.senalesdelfin.com',
           img: 2,
         },
         {
@@ -45,12 +45,12 @@ var AboutView = React.createClass({
         },
         {
           title: 'Estudio de Daniel',
-          url: 'http://estudialabiblia.co/2015/12/11/estudio-completo-del-libro-de-daniel/',
+          url: 'https://estudialabiblia.co/2015/12/11/estudio-completo-del-libro-de-daniel/',
           img: 4,
         },
         {
           title: 'La ley ceremonial',
-          url: 'http://estudialabiblia.co/2015/09/19/estudio-completo-de-las-fiestas-y-los-sabados-ceremoniales/',
+          url: 'https://estudialabiblia.co/2015/09/19/estudio-completo-de-las-fiestas-y-los-sabados-ceremoniales/',
           img: 5,
         },
       ],

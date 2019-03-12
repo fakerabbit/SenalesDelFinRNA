@@ -58,17 +58,16 @@ var ListViewFeed = React.createClass({
     this._isLoading = true;
     this._isAnimating = true;
     this._onLoading();
-    RSSFeedApi.fetchRss(this.props.feedSource)
-    .then((res) => {
-          if (res) {
+    fetch(this.props.feedSource).then((res) => {
+      res.text().then((res) => {
+        console.log('res: ', res);
+        if (res) {
+          try {
             this._isLoading = false;
             this._isAnimating = false;
             var doc = new DOMParser().parseFromString(res, 'text/xml');
-            //console.log("doc:");
-            //console.log(doc);
+            //console.log(doc.getElementsByTagName("title")[0].firstChild.nodeValue);
             var items = doc.getElementsByTagName('item');
-            //console.log("items:");
-            //console.log(items);
             var titles = doc.getElementsByTagName('title');
             var links = doc.getElementsByTagName('link');
             var mediaThumbnail = doc.getElementsByTagName('media:thumbnail');
@@ -76,30 +75,33 @@ var ListViewFeed = React.createClass({
             var objs = [];
             for (var i=1; i < titles.length; i++) {
               var title = titles[i].firstChild.nodeValue;
-              if (title != "Estudia La Biblia") {
+              if (title != "Estudia La Biblia" && title != "SEÑALES DEL FIN" && title != "Lee La Biblia") {
                 objs.push({
                   title: titles[i].firstChild.nodeValue,
                   link: links[i].firstChild.nodeValue,
-                  image: mediaThumbnail[i-2] ? mediaThumbnail[i-2].getAttribute('url') : mediaContent[i-1].getAttribute('url')
+                  image: mediaThumbnail[i-1] 
+                    ? mediaThumbnail[i-1].getAttribute('url') 
+                    : mediaContent[i-2] 
+                      ? mediaContent[i-2].getAttribute('url')
+                      : mediaContent[i] 
+                        ? mediaContent[i].getAttribute('url')
+                        : null
                 })
               }
             }
-            console.log('objs:');
-            console.log(objs);
             this._onDataArrived(objs);
-          } else {
+          }
+          catch (e) {
+            console.error('Error in parsing the feed: ', e);
+          }
+        } else {
             console.log('FAILED FEED');
             console.log(res.responseDetails);
             this._isAnimating = false;
             this._onError();
           }
-        })
-        .catch((error) => {
-          console.log('error fetching:');
-          console.log(error.message);
-          this._isAnimating = false;
-          this._onNoData();
-        });
+      }).catch((error) => console.error('Error in fetching the RSS feed: ', error))
+    }).catch((error) => console.error('Error in fetching the website: ', error));
   },
 
   _onDataArrived(newData) {

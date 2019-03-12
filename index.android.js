@@ -57,19 +57,19 @@ function createAppNavigationState(): Object {
     noticias: {
       index: 0,
       routes: [{key: 'Señales Del Fin'}],
-      feedUrl: 'http://www.senalesdelfin.com/rss/',
+      feedUrl: 'https://www.senalesdelfin.com/rss/',
     },
     // Scenes for the `Estudios` tab.
     estudios: {
       index: 0,
       routes: [{key: 'Señales Del Fin'}],
-      feedUrl: 'http://estudialabiblia.co/feed/',
+      feedUrl: 'https://estudialabiblia.co/feed/',
     },
     // Scenes for the `Lectura` tab.
     lectura: {
       index: 0,
       routes: [{key: 'Señales Del Fin'}],
-      feedUrl: 'http://www.leelabiblia.co/rss/',
+      feedUrl: 'https://www.leelabiblia.co/rss/',
     },
     // Scenes for the 'Acerca' tab.
     acerca: {
