@@ -12,7 +12,7 @@ import {
   View
 } from 'react-native';
 
-export default class SenalesDelFinRNA extends Component {
+export default class SenalesDelFinRNA2 extends Component {
   render() {
     return (
       <View style={styles.container}>
@@ -50,4 +50,4 @@ const styles = StyleSheet.create({
   },
 });
 
-AppRegistry.registerComponent('SenalesDelFinRNA', () => SenalesDelFinRNA);
+AppRegistry.registerComponent('SenalesDelFinRNA2', () => SenalesDelFinRNA2);

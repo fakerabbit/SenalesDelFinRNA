@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "SenalesDelFinRNA.app"
-               BlueprintName = "SenalesDelFinRNA"
+               BuildableName = "SenalesDelFinRNA2.app"
+               BlueprintName = "SenalesDelFinRNA2"
                ReferencedContainer = "container:SenalesDelFinRNA.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -57,8 +57,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "SenalesDelFinRNA.app"
-            BlueprintName = "SenalesDelFinRNA"
+            BuildableName = "SenalesDelFinRNA2.app"
+            BlueprintName = "SenalesDelFinRNA2"
             ReferencedContainer = "container:SenalesDelFinRNA.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -77,8 +77,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "SenalesDelFinRNA.app"
-            BlueprintName = "SenalesDelFinRNA"
+            BuildableName = "SenalesDelFinRNA2.app"
+            BlueprintName = "SenalesDelFinRNA2"
             ReferencedContainer = "container:SenalesDelFinRNA.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -96,8 +96,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "SenalesDelFinRNA.app"
-            BlueprintName = "SenalesDelFinRNA"
+            BuildableName = "SenalesDelFinRNA2.app"
+            BlueprintName = "SenalesDelFinRNA2"
             ReferencedContainer = "container:SenalesDelFinRNA.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

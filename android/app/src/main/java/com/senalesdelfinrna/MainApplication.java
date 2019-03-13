@@ -1,4 +1,4 @@
-package com.senalesdelfinrna;
+package com.senalesdelfinrna2;
 
 import android.app.Application;
 import android.util.Log;
